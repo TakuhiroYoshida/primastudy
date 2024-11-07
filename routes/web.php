@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GradesController;
+use App\Http\Controllers\TentativeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +17,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+        return view('dashboard');
+    });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+        return view('grade');
+    })->name('grade');
+
+Route::get('/sorry', function () {
+        return view('sorry');
+    })->name('sorry');
+
+Route::get('/{id}', [GradesController::class,'show'])->name('show');
+
+Route::get('/tentative/{level}/{num}', [TentativeController::class,'show'])->name('tentative');
+Route::post('/tentative/{level}/{num}',[TentativeController::class,'store'])->name('tentativeAnswer');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
